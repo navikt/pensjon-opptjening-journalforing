@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val azureAdClientVersion = "0.0.7"
 
+val wiremockVersion = "2.33.2"
+
 plugins {
     id("org.springframework.boot") version "2.6.7"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -35,6 +37,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 }
 
 tasks.withType<KotlinCompile> {
