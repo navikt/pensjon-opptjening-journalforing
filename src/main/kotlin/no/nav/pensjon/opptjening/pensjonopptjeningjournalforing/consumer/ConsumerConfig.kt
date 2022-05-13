@@ -29,8 +29,8 @@ class KafkaConfig(@Value("\${kafka.brokers}") private val aivenBootstrapServers:
             ConsumerConfig.MAX_POLL_RECORDS_CONFIG to 1,
         )
 
-    @Bean
-    fun kafkaListener(consumerFactoryBrev: ConsumerFactory<String, String>): ConcurrentKafkaListenerContainerFactory<String, String>? =
+    @Bean("kafkaListenerContainerFactory")
+    fun kafkaListenerContainerFactory(consumerFactoryBrev: ConsumerFactory<String, String>): ConcurrentKafkaListenerContainerFactory<String, String>? =
         ConcurrentKafkaListenerContainerFactory<String, String>().apply {
             consumerFactory = consumerFactoryBrev
             containerProperties.ackMode = ContainerProperties.AckMode.MANUAL

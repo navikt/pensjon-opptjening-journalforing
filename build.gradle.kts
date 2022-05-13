@@ -1,5 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
+val springVersion = "2.6.7"
+val springKafkaVersion = "2.8.5"
 val azureAdClientVersion = "0.0.7"
 val brevmodelVersion = "1.3.3-SNAPSHOT"
 val prometheusVersion = "1.8.5"
@@ -28,11 +31,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    //Spring
+    implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
+    implementation("org.springframework.kafka:spring-kafka:$springKafkaVersion")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.springframework.kafka:spring-kafka")
+
 
     // Log and metric
     implementation("io.micrometer:micrometer-registry-prometheus:$prometheusVersion")
@@ -41,8 +48,8 @@ dependencies {
     // OIDC
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    testImplementation("org.springframework.kafka:spring-kafka-test:$springKafkaVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
 }
 

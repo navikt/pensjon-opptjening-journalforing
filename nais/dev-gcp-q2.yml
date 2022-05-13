@@ -26,6 +26,10 @@ spec:
       value: dev-gcp.teamdokumenthandtering.dokarkiv
     - name: BREVBAKER_API_ID
       value: dev-gcp.pensjonsbrev.pensjon-pdf-bygger
+    - name: OMSORGP_GODSKRIVING_TOPIC
+      value: pensjonopptjening.omsorgp-godskriving-topic-q2
+    - name: OMSORGP_GODSKRIVING_GROUP_ID
+      value: omsorgp-godskriving-group-v1
   image: {{ image }}
   ingresses:
     - https://pensjon-opptjening-journalforing-q2.dev.intern.nav.no
