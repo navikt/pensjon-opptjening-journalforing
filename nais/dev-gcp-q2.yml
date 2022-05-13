@@ -9,6 +9,8 @@ spec:
   azure:
     application:
       enabled: true
+  kafka:
+    pool: nav-dev
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp

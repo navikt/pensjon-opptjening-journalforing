@@ -18,7 +18,7 @@ import java.time.Duration
 
 @EnableKafka
 @Configuration
-class KafkaConfigProd(@Value("\${kafka.brokers}") private val aivenBootstrapServers: String) {
+class KafkaConfig(@Value("\${kafka.brokers}") private val aivenBootstrapServers: String) {
 
     private val consumerConfig
         get(): Map<String, Any> = mapOf(
