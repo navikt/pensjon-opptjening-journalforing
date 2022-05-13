@@ -14,7 +14,7 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class dokdistfordelingClientConfig {
+class DokdistfordelingClientConfig {
 
     @Bean("azureAdConfigDokdistfordeling")
     @Profile("dev-gcp", "prod-gcp")
