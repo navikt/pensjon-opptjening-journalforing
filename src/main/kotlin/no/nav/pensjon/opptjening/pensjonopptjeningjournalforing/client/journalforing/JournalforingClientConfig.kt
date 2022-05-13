@@ -1,6 +1,6 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.client.journalforing
+package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.interceptor.TokenInterceptor
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
