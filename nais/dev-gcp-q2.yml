@@ -20,6 +20,12 @@ spec:
       value: https://dokdistfordeling-q2.dev.intern.nav.no/rest/v1/distribuerjournalpost
     - name: JOURNALFORING_URL
       value: https://dokarkiv-q2.dev.intern.nav.no/rest/journalpostapi/v1/journalpost
+    - name: BREVSENDING_API_ID
+      value: dev-gcp.teamdokumenthandtering.dokdistfordeling
+    - name: JOURNALFORING_API_ID
+      value: dev-gcp.teamdokumenthandtering.dokarkiv
+    - name: BREVBAKER_API_ID
+      value: dev-gcp.pensjonsbrev.pensjon-pdf-bygger
   image: {{ image }}
   ingresses:
     - https://pensjon-opptjening-journalforing-q2.dev.intern.nav.no
