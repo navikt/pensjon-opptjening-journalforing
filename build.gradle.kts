@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val azureAdClientVersion = "0.0.7"
+val brevmodelVersion = "1.3.3-SNAPSHOT"
 
 val wiremockVersion = "2.33.2"
 
