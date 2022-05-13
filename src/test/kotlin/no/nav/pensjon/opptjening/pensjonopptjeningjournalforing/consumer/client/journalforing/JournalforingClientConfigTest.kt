@@ -21,11 +21,15 @@ internal class JournalforingClientConfigTest {
 
     @Test
     fun `journalforingRestTemplate should call endpoint with journalforing token`(wiremockServer: WireMockRuntimeInfo) {
+        WireMock.stubFor(
+            WireMock.get("/")
+                .willReturn(WireMock.ok())
+        )
+
         restTemplate.getForEntity(wiremockServer.httpBaseUrl, String::class.java)
 
-        WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo(""))
+        WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlEqualTo("/"))
             .withHeader(HttpHeaders.AUTHORIZATION, WireMock.equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))
-            .withHeader(HttpHeaders.CONTENT_TYPE, WireMock.equalTo("application/json"))
         )
     }
 }
