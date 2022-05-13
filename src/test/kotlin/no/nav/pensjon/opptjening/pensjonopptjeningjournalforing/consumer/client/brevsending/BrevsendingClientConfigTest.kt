@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.client.brevsending
+package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.client.dokdistfordeling
 
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
@@ -13,14 +13,14 @@ import org.springframework.web.client.RestTemplate
 
 @SpringBootTest
 @WireMockTest
-internal class BrevsendingClientConfigTest {
+internal class DokdistfordelingClientConfigTest {
 
-    @Qualifier("brevsendingRestTemplate")
+    @Qualifier("dokdistfordelingRestTemplate")
     @Autowired
     private lateinit var restTemplate: RestTemplate
 
     @Test
-    fun `brevsendingRestTemplate should call endpoint with brevsending token`(wiremockServer: WireMockRuntimeInfo) {
+    fun `dokdistfordelingRestTemplate should call endpoint with dokdistfordeling token`(wiremockServer: WireMockRuntimeInfo) {
         WireMock.stubFor(
             WireMock.get("/")
                 .willReturn(WireMock.ok())
@@ -29,7 +29,7 @@ internal class BrevsendingClientConfigTest {
         restTemplate.getForEntity(wiremockServer.httpBaseUrl, String::class.java)
 
         WireMock.verify(1, WireMock.getRequestedFor(WireMock.urlEqualTo("/"))
-            .withHeader(HttpHeaders.AUTHORIZATION, WireMock.equalTo("Bearer ${MockTokenConfig.BREVSENDING_TOKEN}"))
+            .withHeader(HttpHeaders.AUTHORIZATION, WireMock.equalTo("Bearer ${MockTokenConfig.DOKDISTFORDELING_TOKEN}"))
         )
     }
 }

@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevsending
+package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling
 
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
@@ -14,14 +14,14 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class BrevsendingClientConfig {
+class dokdistfordelingClientConfig {
 
-    @Bean("azureAdConfigBrevsending")
+    @Bean("azureAdConfigDokdistfordeling")
     @Profile("dev-gcp", "prod-gcp")
-    fun azureAdConfigBrevsending(
+    fun azureAdConfigDokdistfordeling(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${BREVSENDING_API_ID}") pgiEndringApiId: String,
+        @Value("\${DOKDISTFORDELING_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
     ) = AzureAdVariableConfig(
         azureAppClientId = azureAppClientId,
@@ -30,15 +30,15 @@ class BrevsendingClientConfig {
         wellKnownUrl = wellKnownUrl
     )
 
-    @Bean("tokenProviderBrevsending")
+    @Bean("tokenProviderDokdistfordeling")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderBrevsending(@Qualifier("azureAdConfigBrevsending") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderDokdistfordeling(@Qualifier("azureAdConfigDokdistfordeling") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("brevsendingTokenInterceptor")
-    fun brevsendingTokenInterceptor(@Qualifier("tokenProviderBrevsending") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    @Bean("dokdistfordelingTokenInterceptor")
+    fun dokdistfordelingTokenInterceptor(@Qualifier("tokenProviderDokdistfordeling") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
-    @Bean("brevsendingRestTemplate")
-    fun brevsendingRestTemplate(@Value("\${BREVSENDING_URL}") url: String, @Qualifier("brevsendingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
+    @Bean("dokdistfordelingRestTemplate")
+    fun dokdistfordelingRestTemplate(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
         .additionalInterceptors(tokenInterceptor)

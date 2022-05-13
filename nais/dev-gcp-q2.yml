@@ -16,11 +16,11 @@ spec:
       value: dev-gcp
     - name: BREVBAKER_URL
       value: https://pensjon-brevbaker.dev.intern.nav.no
-    - name: BREVSENDING_URL
+    - name: DOKDISTFORDELING_URL
       value: https://dokdistfordeling-q2.dev.intern.nav.no/rest/v1/distribuerjournalpost
     - name: JOURNALFORING_URL
       value: https://dokarkiv-q2.dev.intern.nav.no/rest/journalpostapi/v1/journalpost
-    - name: BREVSENDING_API_ID
+    - name: DOKDISTFORDELING_API_ID
       value: dev-gcp.teamdokumenthandtering.dokdistfordeling
     - name: JOURNALFORING_API_ID
       value: dev-gcp.teamdokumenthandtering.dokarkiv

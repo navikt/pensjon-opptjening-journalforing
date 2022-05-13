@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.client.brevbaking
+package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.client.dokdistfordeling
 
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
