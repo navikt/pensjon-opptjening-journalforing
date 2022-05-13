@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val azureAdClientVersion = "0.0.7"
 val brevmodelVersion = "1.3.3-SNAPSHOT"
+val prometheusVersion = "1.8.5"
+val logbackEncoderVersion = "7.1.1"
 
 val wiremockVersion = "2.33.2"
 
@@ -31,6 +33,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.kafka:spring-kafka")
+
+    // Log and metric
+    implementation("io.micrometer:micrometer-registry-prometheus:$prometheusVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
 
     // OIDC
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
