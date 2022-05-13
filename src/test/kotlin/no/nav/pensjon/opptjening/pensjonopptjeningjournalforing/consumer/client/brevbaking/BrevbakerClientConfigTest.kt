@@ -13,14 +13,14 @@ import org.springframework.web.client.RestTemplate
 
 @SpringBootTest
 @WireMockTest
-internal class BrevbakingClientConfigTest {
+internal class BrevbakerClientConfigTest {
 
-    @Qualifier("brevbakingRestTemplate")
+    @Qualifier("brevbakerRestTemplate")
     @Autowired
     private lateinit var restTemplate: RestTemplate
 
     @Test
-    private fun `brevbakingRestTemplate should call endpoint with brevbaking token`(wiremockServer: WireMockRuntimeInfo) {
+    fun `brevbakingRestTemplate should call endpoint with brevbaking token`(wiremockServer: WireMockRuntimeInfo) {
         restTemplate.getForEntity(wiremockServer.httpBaseUrl, String::class.java)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo(""))

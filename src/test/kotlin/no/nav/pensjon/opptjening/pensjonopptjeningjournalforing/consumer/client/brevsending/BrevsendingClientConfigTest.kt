@@ -20,7 +20,7 @@ internal class BrevsendingClientConfigTest {
     private lateinit var restTemplate: RestTemplate
 
     @Test
-    private fun `brevsendingRestTemplate should call endpoint with brevsending token`(wiremockServer: WireMockRuntimeInfo) {
+    fun `brevsendingRestTemplate should call endpoint with brevsending token`(wiremockServer: WireMockRuntimeInfo) {
         restTemplate.getForEntity(wiremockServer.httpBaseUrl, String::class.java)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo(""))

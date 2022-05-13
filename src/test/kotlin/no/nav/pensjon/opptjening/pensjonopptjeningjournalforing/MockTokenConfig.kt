@@ -14,7 +14,7 @@ class MockTokenConfig {
         const val JOURNALFORING_TOKEN = "Journalforing.Journalforing.Journalforing"
     }
 
-    @Bean("tokenProviderBrevBaking")
+    @Bean("tokenProviderBrevbaker")
     fun mockTokenProviderBrevBaking(): TokenProvider = MockTokenProvider(BREVBAKING_TOKEN)
 
     @Bean("tokenProviderBrevsending")

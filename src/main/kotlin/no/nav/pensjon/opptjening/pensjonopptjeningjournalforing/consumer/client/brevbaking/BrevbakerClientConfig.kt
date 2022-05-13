@@ -7,20 +7,21 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.web.client.RestTemplate
 import pensjon.opptjening.azure.ad.client.AzureAdTokenProvider
 import pensjon.opptjening.azure.ad.client.AzureAdVariableConfig
 import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class BrevbakingClientConfig {
+class BrevbakerClientConfig {
 
-    @Bean("azureAdConfigBrevbaking")
+    @Bean("azureAdConfigBrevbaker")
     @Profile("dev-fss", "prod-fss")
-    fun azureAdConfigBrevbaking(
+    fun azureAdConfigBrevbaker(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${BREVBAKING_API_ID}") pgiEndringApiId: String,
+        @Value("\${BREVBAKER_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
     ) = AzureAdVariableConfig(
         azureAppClientId = azureAppClientId,
@@ -29,17 +30,22 @@ class BrevbakingClientConfig {
         wellKnownUrl = wellKnownUrl,
     )
 
-    @Bean("tokenProviderBrevBaking")
+    @Bean("tokenProviderBrevbaker")
     @Profile("dev-fss", "prod-fss")
-    fun tokenProviderBrevBaking(@Qualifier("azureAdConfigBrevbaking") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderBrevbaker(@Qualifier("azureAdConfigBrevbaker") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("brevbakingTokenInterceptor")
-    fun brevbakingTokenInterceptor(@Qualifier("tokenProviderBrevBaking") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    @Bean("brevbakerTokenInterceptor")
+    fun brevbakerTokenInterceptor(@Qualifier("tokenProviderBrevbaker") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
-    @Bean("brevbakingRestTemplate")
-    fun brevbakingRestTemplate(@Value("\${BREVBAKING_URL}") url: String, @Qualifier("brevbakingTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
+    @Bean("brevbakerRestTemplate")
+    fun brevbakerRestTemplate(@Value("\${BREVBAKER_URL}") url: String, @Qualifier("brevbakerTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
         .additionalInterceptors(tokenInterceptor)
         .build()
+
+    @Bean
+    fun brevbakerClient(@Qualifier("brevbakerRestTemplate") restTemplate: RestTemplate,@Value("\${BREVBAKER_URL}") url: String): BrevbakerClient {
+        return BrevbakerClient(restTemplate,url)
+    }
 }

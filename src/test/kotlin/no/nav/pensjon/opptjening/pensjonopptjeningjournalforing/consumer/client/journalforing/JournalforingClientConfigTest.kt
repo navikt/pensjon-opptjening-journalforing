@@ -20,7 +20,7 @@ internal class JournalforingClientConfigTest {
     private lateinit var restTemplate: RestTemplate
 
     @Test
-    private fun `journalforingRestTemplate should call endpoint with journalforing token`(wiremockServer: WireMockRuntimeInfo) {
+    fun `journalforingRestTemplate should call endpoint with journalforing token`(wiremockServer: WireMockRuntimeInfo) {
         restTemplate.getForEntity(wiremockServer.httpBaseUrl, String::class.java)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo(""))
