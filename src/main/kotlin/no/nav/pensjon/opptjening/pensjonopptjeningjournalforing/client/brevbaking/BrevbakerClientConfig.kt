@@ -17,7 +17,7 @@ import java.time.Duration
 class BrevbakerClientConfig {
 
     @Bean("azureAdConfigBrevbaker")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigBrevbaker(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
@@ -31,7 +31,7 @@ class BrevbakerClientConfig {
     )
 
     @Bean("tokenProviderBrevbaker")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderBrevbaker(@Qualifier("azureAdConfigBrevbaker") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("brevbakerTokenInterceptor")

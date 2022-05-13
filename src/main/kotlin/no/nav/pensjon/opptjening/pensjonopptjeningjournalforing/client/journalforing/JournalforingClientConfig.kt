@@ -17,7 +17,7 @@ import java.time.Duration
 class JournalforingClientConfig {
 
     @Bean("azureAdConfigJournalforing")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigJournalforing(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
@@ -31,7 +31,7 @@ class JournalforingClientConfig {
     )
 
     @Bean("tokenProviderJournalforing")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderJournalforing(@Qualifier("azureAdConfigJournalforing") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("JournalforingTokenInterceptor")

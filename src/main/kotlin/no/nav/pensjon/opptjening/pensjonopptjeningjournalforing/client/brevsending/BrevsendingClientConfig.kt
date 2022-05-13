@@ -17,7 +17,7 @@ import java.time.Duration
 class BrevsendingClientConfig {
 
     @Bean("azureAdConfigBrevsending")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigBrevsending(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
@@ -31,7 +31,7 @@ class BrevsendingClientConfig {
     )
 
     @Bean("tokenProviderBrevsending")
-    @Profile("dev-fss", "prod-fss")
+    @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderBrevsending(@Qualifier("azureAdConfigBrevsending") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("brevsendingTokenInterceptor")
