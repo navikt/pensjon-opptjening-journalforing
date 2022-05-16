@@ -20,12 +20,16 @@ spec:
       value: https://dokdistfordeling-q2.dev.intern.nav.no/rest/v1/distribuerjournalpost
     - name: JOURNALFORING_URL
       value: https://dokarkiv-q2.dev.intern.nav.no/rest/journalpostapi/v1/journalpost
+    - name: POSTADRESSE_URL
+      value: https://regoppslag.dev.intern.nav.no/rest/postadresse
     - name: DOKDISTFORDELING_API_ID
       value: dev-gcp.teamdokumenthandtering.dokdistfordeling
     - name: JOURNALFORING_API_ID
       value: dev-gcp.teamdokumenthandtering.dokarkiv
     - name: BREVBAKER_API_ID
       value: dev-gcp.pensjonsbrev.pensjon-pdf-bygger
+    - name: POSTADRESSE_API_ID
+      value: dev-gcp.teamdokumenthandtering.regoppslag
     - name: OMSORGP_GODSKRIVING_TOPIC
       value: pensjonopptjening.omsorgp-godskriving-topic-q2
     - name: OMSORGP_GODSKRIVING_GROUP_ID

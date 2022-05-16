@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
+package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.postadresse
 
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
@@ -14,38 +14,38 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class JournalforingClientConfig {
+class PostadresseClientConfig {
 
-    @Bean("azureAdConfigJournalforing")
+    @Bean("azureAdConfigPostadresse")
     @Profile("dev-gcp", "prod-gcp")
-    fun azureAdConfigJournalforing(
+    fun azureAdConfigBrevbaker(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${JOURNALFORING_API_ID}") pgiEndringApiId: String,
+        @Value("\${POSTADRESSE_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
     ) = AzureAdVariableConfig(
         azureAppClientId = azureAppClientId,
         azureAppClientSecret = azureAppClientSecret,
         targetApiId = pgiEndringApiId,
-        wellKnownUrl = wellKnownUrl
+        wellKnownUrl = wellKnownUrl,
     )
 
-    @Bean("tokenProviderJournalforing")
+    @Bean("tokenProviderPostadresse")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderJournalforing(@Qualifier("azureAdConfigJournalforing") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderPostadresse(@Qualifier("azureAdConfigBrevbaker") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("JournalforingTokenInterceptor")
-    fun JournalforingTokenInterceptor(@Qualifier("tokenProviderJournalforing") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    @Bean("postadresseTokenInterceptor")
+    fun postadresseTokenInterceptor(@Qualifier("tokenProviderPostadresse") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
-    @Bean("journalforingRestTemplate")
-    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("JournalforingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
+    @Bean("postadresseRestTemplate")
+    fun postadresseRestTemplate(@Value("\${POSTADRESSE_URL}") url: String, @Qualifier("postadresseTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
         .additionalInterceptors(tokenInterceptor)
         .build()
 
     @Bean
-    fun journalforingClient(@Qualifier("journalforingRestTemplate") restTemplate: RestTemplate,@Value("\${JOURNALFORING_URL}") url: String): JournalforingClient {
-        return JournalforingClient(restTemplate,url)
+    fun postadresseClient(@Qualifier("postadresseRestTemplate") restTemplate: RestTemplate, @Value("\${POSTADRESSE_URL}") url: String): PostadresseClient {
+        return PostadresseClient(restTemplate,url)
     }
 }
