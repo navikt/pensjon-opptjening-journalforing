@@ -14,7 +14,7 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class DokdistfordelingClientConfig {
+class DokdistClientConfig {
 
     @Bean("azureAdConfigDokdistfordeling")
     @Profile("dev-gcp", "prod-gcp")
@@ -32,15 +32,21 @@ class DokdistfordelingClientConfig {
 
     @Bean("tokenProviderDokdistfordeling")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderDokdistfordeling(@Qualifier("azureAdConfigDokdistfordeling") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderDokdistfordeling(@Qualifier("azureAdConfigDokdistfordeling") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+        AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("dokdistfordelingTokenInterceptor")
     fun dokdistfordelingTokenInterceptor(@Qualifier("tokenProviderDokdistfordeling") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
     @Bean("dokdistfordelingRestTemplate")
-    fun dokdistfordelingRestTemplate(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
-        .setConnectTimeout(Duration.ofMillis(1000))
-        .rootUri(url)
-        .additionalInterceptors(tokenInterceptor)
-        .build()
+    fun dokdistfordelingRestTemplate(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingTokenInterceptor") tokenInterceptor: TokenInterceptor) =
+        RestTemplateBuilder()
+            .setConnectTimeout(Duration.ofMillis(1000))
+            .rootUri(url)
+            .additionalInterceptors(tokenInterceptor)
+            .build()
+
+    @Bean
+    fun dokDistClient(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingRestTemplate") dokdistRestTemplate: RestTemplate): DokDistClient =
+        DokDistClient(url, dokdistRestTemplate)
 }
