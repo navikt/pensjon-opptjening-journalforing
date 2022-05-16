@@ -28,7 +28,7 @@ class RestTemplateTokenTest {
     @Autowired
     private lateinit var brevbakerRestTemplate: RestTemplate
 
-    @Qualifier("dokdistfordelingRestTemplate")
+    @Qualifier("dokdistRestTemplate")
     @Autowired
     private lateinit var dokdistfordelingRestTemplate: RestTemplate
 

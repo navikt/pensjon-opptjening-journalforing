@@ -16,9 +16,9 @@ import java.time.Duration
 @Configuration
 class DokdistClientConfig {
 
-    @Bean("azureAdConfigDokdistfordeling")
+    @Bean("azureAdConfigDokdist")
     @Profile("dev-gcp", "prod-gcp")
-    fun azureAdConfigDokdistfordeling(
+    fun azureAdConfigDokdist(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
         @Value("\${DOKDISTFORDELING_API_ID}") pgiEndringApiId: String,
@@ -30,16 +30,16 @@ class DokdistClientConfig {
         wellKnownUrl = wellKnownUrl
     )
 
-    @Bean("tokenProviderDokdistfordeling")
+    @Bean("tokenProviderDokdist")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderDokdistfordeling(@Qualifier("azureAdConfigDokdistfordeling") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+    fun tokenProviderDokdist(@Qualifier("azureAdConfigDokdist") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
         AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("dokdistfordelingTokenInterceptor")
-    fun dokdistfordelingTokenInterceptor(@Qualifier("tokenProviderDokdistfordeling") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    @Bean("dokdistTokenInterceptor")
+    fun dokdistTokenInterceptor(@Qualifier("tokenProviderDokdist") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
-    @Bean("dokdistfordelingRestTemplate")
-    fun dokdistfordelingRestTemplate(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingTokenInterceptor") tokenInterceptor: TokenInterceptor) =
+    @Bean("dokdistRestTemplate")
+    fun dokdistRestTemplate(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistTokenInterceptor") tokenInterceptor: TokenInterceptor) =
         RestTemplateBuilder()
             .setConnectTimeout(Duration.ofMillis(1000))
             .rootUri(url)
@@ -47,6 +47,6 @@ class DokdistClientConfig {
             .build()
 
     @Bean
-    fun dokDistClient(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistfordelingRestTemplate") dokdistRestTemplate: RestTemplate): DokDistClient =
+    fun dokDistClient(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistRestTemplate") dokdistRestTemplate: RestTemplate): DokDistClient =
         DokDistClient(url, dokdistRestTemplate)
 }

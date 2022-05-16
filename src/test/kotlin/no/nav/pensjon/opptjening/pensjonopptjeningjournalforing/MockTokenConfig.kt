@@ -17,7 +17,7 @@ class MockTokenConfig {
     @Bean("tokenProviderBrevbaker")
     fun mockTokenProviderBrevBaking(): TokenProvider = MockTokenProvider(BREVBAKING_TOKEN)
 
-    @Bean("tokenProviderDokdistfordeling")
+    @Bean("tokenProviderDokdist")
     fun mockTokenProviderDokdistfordeling(): TokenProvider = MockTokenProvider(DOKDISTFORDELING_TOKEN)
 
     @Bean("tokenProviderJournalforing")
