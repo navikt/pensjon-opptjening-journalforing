@@ -7,19 +7,23 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.UriComponentsBuilder
 
-class JournalforingClient(private val restTemplate: RestTemplate, private val url: String) {
+class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
+
+    private val urlWithParams = UriComponentsBuilder
+        .fromUriString(url)
+        .queryParam("forsoekFerdigstill", "true")
+        .build()
+        .toUri()
 
     fun opprettJournalpost(journalpostInfo: JournalpostInfo): OpprettJournalpostResponse {
-        val headers = HttpHeaders().apply {
-            contentType = MediaType.APPLICATION_FORM_URLENCODED
-        }
-
         return restTemplate.exchange(
-            url,
+            urlWithParams,
             HttpMethod.POST,
-            HttpEntity(createRequest(journalpostInfo).toJson(), headers),
-            OpprettJournalpostResponse::class.java).body!!
+            HttpEntity(createRequest(journalpostInfo).toJson(), applicationJsonHeader),
+            OpprettJournalpostResponse::class.java
+        ).body!!
     }
 
     private fun createRequest(journalpostInfo: JournalpostInfo) =
@@ -40,4 +44,10 @@ class JournalforingClient(private val restTemplate: RestTemplate, private val ur
             eksternReferanseId = journalpostInfo.unikBrevId(),
             tilleggsopplysninger = journalpostInfo.tilleggsopplysning()
         )
+
+    companion object {
+        private val applicationJsonHeader = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+        }
+    }
 }

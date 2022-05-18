@@ -1,7 +1,9 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
+import com.github.tomakehurst.wiremock.matching.StringValuePattern
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.MockTokenConfig
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterMetadata
@@ -36,7 +38,7 @@ internal class JournalforingClientTest {
         val response = OpprettJournalpostResponse(journalpostId = "3456", journalpostferdigstilt = false)
 
         WireMock.stubFor(
-            WireMock.post(WireMock.urlEqualTo("/"))
+            WireMock.post(WireMock.urlPathEqualTo("/"))
                 .willReturn(
                     WireMock.aResponse().withHeader("Content-Type", "application/json")
                         .withStatus(200)
@@ -61,9 +63,10 @@ internal class JournalforingClientTest {
 
         journalforingClient.opprettJournalpost(request)
 
-        WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/"))
-            .withHeader(HttpHeaders.AUTHORIZATION, WireMock.equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))
+        WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlPathEqualTo("/"))
+            .withHeader(HttpHeaders.AUTHORIZATION, equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))
             .withRequestBody(WireMock.equalToJson(OMSORGP_GODSKRIVING_REQUEST))
+            .withQueryParam("forsoekFerdigstill", equalTo("true"))
         )
     }
 
