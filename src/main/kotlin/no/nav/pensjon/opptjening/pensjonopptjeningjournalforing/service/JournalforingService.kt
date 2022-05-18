@@ -4,13 +4,24 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbakin
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling.DokDistClient
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClient
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.postadresse.PostadresseClient
+import org.springframework.stereotype.Service
 
-class JournalforingService {
+@Service
+class JournalforingService(
+    postadresseClient: PostadresseClient,
+    brevbakerClient: BrevbakerClient,
+    journalforingClient: JournalforingClient,
+    dokDistClient: DokDistClient
+) {
+    /**
+     * fnr
+     * sakId
+     * brevkode
+     * LetterRequest eller innhold i brev
+     *
+     */
 
-    fun journalfor(postadresseClient: PostadresseClient,
-                   brevbakerClient: BrevbakerClient,
-                   journalforingClient: JournalforingClient,
-                   dokDistClient: DokDistClient) {
+    fun journalfor() {
 
         //TODO slå opp postadresse for person
 

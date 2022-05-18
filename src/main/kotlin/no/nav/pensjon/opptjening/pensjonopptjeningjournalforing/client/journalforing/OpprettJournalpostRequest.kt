@@ -2,31 +2,32 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalf
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonValue
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
 
 
 class OpprettJournalpostRequest(
-    val avsenderMottaker: AvsenderMottaker,
+    val avsenderMottaker: Mottaker,
     val behandlingstema: Behandlingstema,
     val bruker: Bruker,
     val dokumenter: List<Dokument>,
-    val journalfoerendeEnhet: Enhet? = null,
+    val journalfoerendeEnhet: Enhet = Enhet.AUTOMATISK_JOURNALFORING,
     val journalpostType: JournalpostType = JournalpostType.UTGAAENDE,
     val sak: Sak,
-    val tema: Tema = Tema.PEN,
+    val tema: Tema,
     val tittel: String,
-    val kanal: String = "EESSI", //TODO hva skal dette være
+    val kanal: String = "POPP", //TODO finn ut hva denne skal være
     val eksternReferanseId: String? = null,
+    val tilleggsopplysninger: Tilleggsopplysning? = null,
 ) {
     init {
         require(dokumenter.isNotEmpty()) { "OpprettJournalpostRequest.dokumenter must have one document" }
     }
 }
 
-data class AvsenderMottaker(
-    val id: String? = null,
-    val idType: IdType? = null,
-    val navn: String? = null,
-    val land: String? = null,
+data class Mottaker(
+    val id: String? = null, //fnr
+    val land: String? = null, //må oppgis hvis bruker ie
+    val idType: IdType = IdType.FNR,
 )
 
 //TODO hør med fagperson om hva vi skal velge
@@ -48,15 +49,15 @@ data class Bruker(
 enum class IdType { FNR }
 
 data class Dokument(
-    val brevkode: String,
+    val brevkode: BrevKode,
     val tittel: String,
     val dokumentvarianter: List<Dokumentvariant>,
 )
 
 data class Dokumentvariant(
-    val filtype: Filtype,
-    val fysiskDokument: String,
-    val variantformat: Variantformat,
+    val fysiskDokument: ByteArray,
+    val filtype: Filtype = Filtype.PDFA,
+    val variantformat: Variantformat = Variantformat.ARKIV,
 )
 
 //TODO
@@ -75,11 +76,20 @@ enum class JournalpostType { UTGAAENDE }
 
 data class Sak(
     val arkivsaksnummer: String,
-    val arkivsaksystem: String,
+    val arkivsaksystem: Fagsaksystem = Fagsaksystem.PP01,
+    val sakstype: SaksType = SaksType.FAGSAK,
 )
 
+enum class SaksType {
+    FAGSAK
+}
+
+enum class Fagsaksystem {
+    PP01
+}
+
 //TODO hør med fagperson om hva vi skal velge
-enum class Tema { PEN }
+enum class Tema { PEN, UFO }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class OpprettJournalPostResponse(
@@ -87,6 +97,11 @@ class OpprettJournalPostResponse(
     val journalstatus: String,
     val melding: String? = null,
     val journalpostferdigstilt: Boolean,
+)
+
+data class Tilleggsopplysning(
+    val nokkel: String,
+    val verdi: String,
 )
 
 
