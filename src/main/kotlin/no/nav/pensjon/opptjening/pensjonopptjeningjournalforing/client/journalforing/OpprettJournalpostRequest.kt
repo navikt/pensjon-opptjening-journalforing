@@ -2,36 +2,6 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalf
 
 import com.fasterxml.jackson.annotation.JsonValue
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.nav
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultFagsaksystem
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.navOrgNr
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.orgIdType
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.norge
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultEnhet
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultFiltype
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultVariantformat
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultMottakerIdType
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultJournalposttype
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultKanal
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.DefaultJournalpostValues.Companion.defaultSakstype
-
-class DefaultJournalpostValues{
-    companion object{
-        val orgIdType = IdType.ORGNR
-        val navOrgNr = "889640782"
-        val norge = "NO"
-        val nav = "NAV"
-
-        val defaultMottakerIdType = IdType.FNR
-        val defaultFiltype: Filtype = Filtype.PDFA
-        val defaultVariantformat: Variantformat = Variantformat.ARKIV
-        val defaultEnhet = Enhet.AUTOMATISK_JOURNALFORING
-        val defaultJournalposttype = Journalposttype.UTGAAENDE
-        val defaultFagsaksystem: Fagsaksystem = Fagsaksystem.PP01
-        val defaultSakstype : SaksType = SaksType.FAGSAK
-        val defaultKanal = "POPP"
-    }
-}
 
 class OpprettJournalpostRequest(
     val avsenderMottaker: Avsender,
@@ -50,6 +20,12 @@ class OpprettJournalpostRequest(
     init {
         require(dokumenter.isNotEmpty()) { "OpprettJournalpostRequest.dokumenter must have one document" }
     }
+
+    companion object{
+        val defaultEnhet = Enhet.AUTOMATISK_JOURNALFORING
+        val defaultJournalposttype = Journalposttype.UTGAAENDE
+        val defaultKanal = "POPP"
+    }
 }
 
 data class Avsender(
@@ -57,7 +33,14 @@ data class Avsender(
     val land: String = norge,
     val idType: IdType = orgIdType,
     val navn:String = nav,
-)
+){
+    companion object{
+        val orgIdType = IdType.ORGNR
+        val navOrgNr = "889640782"
+        val norge = "NO"
+        val nav = "NAV"
+    }
+}
 
 
 //TODO hør med fagperson om hva vi skal velge
@@ -74,7 +57,11 @@ enum class Behandlingstema(@JsonValue val kode: String) {
 data class Bruker(
     val id: String,
     val idType: IdType = defaultMottakerIdType,
-)
+){
+    companion object{
+        val defaultMottakerIdType = IdType.FNR
+    }
+}
 
 enum class IdType { FNR , ORGNR}
 
@@ -88,7 +75,12 @@ data class Dokumentvariant(
     val fysiskDokument: String,
     val filtype: Filtype = defaultFiltype,
     val variantformat: Variantformat = defaultVariantformat,
-)
+){
+    companion object{
+        val defaultFiltype: Filtype = Filtype.PDFA
+        val defaultVariantformat: Variantformat = Variantformat.ARKIV
+    }
+}
 
 //TODO
 enum class Filtype { PDFA }
@@ -108,7 +100,12 @@ data class Sak(
     val fagsakId: String,
     val fagsaksystem: Fagsaksystem = defaultFagsaksystem,
     val sakstype: SaksType = defaultSakstype,
-)
+){
+    companion object{
+        val defaultFagsaksystem: Fagsaksystem = Fagsaksystem.PP01
+        val defaultSakstype : SaksType = SaksType.FAGSAK
+    }
+}
 
 enum class SaksType {
     FAGSAK
@@ -125,12 +122,3 @@ data class Tilleggsopplysning(
     val nokkel: String,
     val verdi: String,
 )
-
-
-
-
-
-
-
-
-

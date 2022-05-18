@@ -80,15 +80,15 @@ internal class JournalforingClientTest {
 private val OMSORGP_GODSKRIVING_REQUEST = """
 {
   "avsenderMottaker": {
-    "id": "${DefaultJournalpostValues.navOrgNr}",
-    "land": "${DefaultJournalpostValues.norge}",
-    "idType": "${DefaultJournalpostValues.orgIdType}",
-    "navn": "${DefaultJournalpostValues.nav}"
+    "id": "${Avsender.navOrgNr}",
+    "land": "${Avsender.norge}",
+    "idType": "${Avsender.orgIdType}",
+    "navn": "${Avsender.nav}"
   },
   "behandlingstema": "${OmsorgsTema().getBehandlingsTema().kode}",
   "bruker": {
     "id": "$FNR",
-    "idType": "${DefaultJournalpostValues.defaultMottakerIdType}"
+    "idType": "${Bruker.defaultMottakerIdType}"
   },
   "dokumenter": [
     {
@@ -97,14 +97,14 @@ private val OMSORGP_GODSKRIVING_REQUEST = """
       "dokumentvarianter": [
         {
           "fysiskDokument": "$PDF",
-          "filtype": "${DefaultJournalpostValues.defaultFiltype}",
-          "variantformat": "${DefaultJournalpostValues.defaultVariantformat}"
+          "filtype": "${Dokumentvariant.defaultFiltype}",
+          "variantformat": "${Dokumentvariant.defaultVariantformat}"
         }
       ]
     }
   ],
-  "journalfoerendeEnhet": "${DefaultJournalpostValues.defaultEnhet.enhetsNr}",
-  "journalposttype": "${DefaultJournalpostValues.defaultJournalposttype}",
+  "journalfoerendeEnhet": "${OpprettJournalpostRequest.defaultEnhet.enhetsNr}",
+  "journalposttype": "${OpprettJournalpostRequest.defaultJournalposttype}",
   "sak": {
     "fagsakId": "$SAK_ID",
     "fagsaksystem": "${Fagsaksystem.PP01}",
@@ -112,7 +112,7 @@ private val OMSORGP_GODSKRIVING_REQUEST = """
   },
   "tema": "${OmsorgsTema().getTema()}",
   "tittel": "$TITTEL",
-  "kanal": "${DefaultJournalpostValues.defaultKanal}",
+  "kanal": "${OpprettJournalpostRequest.defaultKanal}",
   "eksternReferanseId": "${BrevKode.OMSORGP_GODSKRIVING.name}${Md5Hash.createHashString("$FNR$AR$SAK_ID")}",
   "tilleggsopplysninger": [
     {
