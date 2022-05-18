@@ -24,7 +24,7 @@ class JournalforingClient(private val restTemplate: RestTemplate, private val ur
 
     private fun createRequest(journalpostInfo: JournalpostInfo) =
         OpprettJournalpostRequest(
-            avsenderMottaker = Mottaker(id = journalpostInfo.fnr, land = journalpostInfo.land, idType = IdType.FNR),
+            avsenderMottaker = Avsender(),
             behandlingstema = journalpostInfo.getBehandlingsTema(),
             tema = journalpostInfo.getTema(),
             bruker = Bruker(id = journalpostInfo.fnr),

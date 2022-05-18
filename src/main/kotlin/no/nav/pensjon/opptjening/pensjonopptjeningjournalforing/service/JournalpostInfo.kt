@@ -7,7 +7,6 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Tema
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Tilleggsopplysning
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.Md5Hash
-import java.util.*
 
 data class JournalpostInfo(
     val fnr: String,
@@ -21,11 +20,11 @@ data class JournalpostInfo(
 
     fun brevTittel() = brevbakingResponse.letterMetadata.displayTitle
 
-    fun brev() = Base64.getDecoder().decode(brevbakingResponse.base64pdf)
+    fun brev() = brevbakingResponse.base64pdf
 
-    fun tilleggsopplysning() = Tilleggsopplysning("isSensitiv", brevbakingResponse.letterMetadata.isSensitiv.toString())
+    fun tilleggsopplysning() = listOf(Tilleggsopplysning("isSensitiv", brevbakingResponse.letterMetadata.isSensitiv.toString()))
 
-    fun unikBrevId() = "${brevKode.name}${Md5Hash.createHashString("${brevKode.name}$fnr$ar${sak.arkivsaksnummer}")}" // Vi må urdere denne logikken
+    fun unikBrevId() = "${brevKode.name}${Md5Hash.createHashString("$fnr$ar${sak.fagsakId}")}" // Vi må urdere denne logikken
 
     fun getTema(): Tema = sakType.getTema()
 
