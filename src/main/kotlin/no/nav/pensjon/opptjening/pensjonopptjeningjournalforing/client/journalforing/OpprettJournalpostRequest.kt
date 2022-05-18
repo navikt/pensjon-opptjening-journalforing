@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonValue
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
 
@@ -90,14 +89,6 @@ enum class Fagsaksystem {
 
 //TODO hør med fagperson om hva vi skal velge
 enum class Tema { PEN, UFO }
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-class OpprettJournalPostResponse(
-    val journalpostId: String,
-    val journalstatus: String,
-    val melding: String? = null,
-    val journalpostferdigstilt: Boolean,
-)
 
 data class Tilleggsopplysning(
     val nokkel: String,
