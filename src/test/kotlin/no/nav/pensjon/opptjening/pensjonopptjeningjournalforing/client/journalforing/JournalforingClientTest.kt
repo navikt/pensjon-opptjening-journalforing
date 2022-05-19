@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.MockTokenConfig
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterMetadata
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevbakingResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.AR
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.FNR
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.PDF
@@ -54,7 +54,7 @@ internal class JournalforingClientTest {
                 land = "NO",
                 brevKode = BrevKode.OMSORGP_GODSKRIVING
             ),
-            letterResponse = LetterResponse(
+            brevbakingResponse = BrevbakingResponse(
                 base64pdf = PDF,
                 letterMetadata = LetterMetadata(displayTitle = TITTEL, isSensitiv = false)
             )

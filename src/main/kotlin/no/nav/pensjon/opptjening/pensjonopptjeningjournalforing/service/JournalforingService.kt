@@ -14,16 +14,9 @@ class JournalforingService(
     private val journalforingClient: JournalforingClient,
     private val dokDistClient: DokDistClient
 ) {
-    /**
-     * fnr
-     * sakId
-     * brevkode
-     * LetterRequest eller innhold i brev
-     *
-     */
 
-    fun journalfor(journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo, request: BrevbakingRequest) {
-        val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode,request)
+    fun journalfor(journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo, brevbakingRequest: BrevbakingRequest) {
+        val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode,brevbakingRequest)
 
         val opprettJournalpostRequest = OpprettJournalpostRequest(journalforingInfo,brevBakerResponse)
         val opprettJournalpostResponse = journalforingClient.opprettJournalpost(opprettJournalpostRequest)

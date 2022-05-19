@@ -3,7 +3,7 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaki
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Tilleggsopplysning
 
 
-data class LetterResponse(val base64pdf: String, val letterMetadata: LetterMetadata){
+data class BrevbakingResponse(val base64pdf: String, val letterMetadata: LetterMetadata){
     fun brevTittel() = letterMetadata.displayTitle
 
     fun brev() = base64pdf

@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import com.fasterxml.jackson.annotation.JsonValue
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevbakingResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 
@@ -18,22 +18,22 @@ class OpprettJournalpostRequest(
     val eksternReferanseId: String? = null,
     val tilleggsopplysninger: List<Tilleggsopplysning>? = null,
 ) {
-    constructor(journalforingInfo: JournalforingInfo, letterResponse: LetterResponse) : this(
+    constructor(journalforingInfo: JournalforingInfo, brevbakingResponse: BrevbakingResponse) : this(
         avsenderMottaker = Avsender(),
         behandlingstema = journalforingInfo.getBehandlingsTema(),
         tema = journalforingInfo.getTema(),
         bruker = Bruker(id = journalforingInfo.fnr),
         dokumenter = listOf(
             Dokument(
-                tittel = letterResponse.brevTittel(),
+                tittel = brevbakingResponse.brevTittel(),
                 brevkode = journalforingInfo.brevKode,
-                dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = letterResponse.brev()))
+                dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = brevbakingResponse.brev()))
             )
         ),
         sak = journalforingInfo.sak,
-        tittel = letterResponse.brevTittel(),
+        tittel = brevbakingResponse.brevTittel(),
         eksternReferanseId = journalforingInfo.unikBrevId(),
-        tilleggsopplysninger = letterResponse.tilleggsopplysning()
+        tilleggsopplysninger = brevbakingResponse.tilleggsopplysning()
     )
 
     init {
