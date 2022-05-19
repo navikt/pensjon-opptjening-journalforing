@@ -30,11 +30,15 @@ class KafkaConfig(@Value("\${kafka.brokers}") private val aivenBootstrapServers:
         )
 
     @Bean("kafkaListenerContainerFactory")
-    fun kafkaListenerContainerFactory(consumerFactoryBrev: ConsumerFactory<String, String>): ConcurrentKafkaListenerContainerFactory<String, String>? =
+    fun kafkaListenerContainerFactory(
+        consumerFactoryBrev: ConsumerFactory<String, String>,
+        errorHandler: KafkaStoppingErrorHandler,
+    ): ConcurrentKafkaListenerContainerFactory<String, String> =
         ConcurrentKafkaListenerContainerFactory<String, String>().apply {
             consumerFactory = consumerFactoryBrev
             containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
             containerProperties.setAuthExceptionRetryInterval(Duration.ofSeconds(4L))
+            setCommonErrorHandler(errorHandler)
         }
 
     @Bean
