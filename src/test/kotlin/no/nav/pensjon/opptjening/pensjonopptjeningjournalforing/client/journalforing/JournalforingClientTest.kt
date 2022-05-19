@@ -3,7 +3,6 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalf
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
-import com.github.tomakehurst.wiremock.matching.StringValuePattern
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.MockTokenConfig
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterMetadata
@@ -46,22 +45,21 @@ internal class JournalforingClientTest {
                 )
         )
 
-        val request = JournalpostInfo(
+        val journalpostInfo = JournalpostInfo(
             fnr = FNR,
             ar = AR,
             sak = Sak(fagsakId = SAK_ID),
             sakType = SakType.OMSORG,
             land = "NO",
-            brevbakingResponse = LetterResponse(
-                base64pdf = PDF,
-                letterMetadata = LetterMetadata(
-                    displayTitle = TITTEL,
-                    isSensitiv = false)
-            ),
             brevKode = BrevKode.OMSORGP_GODSKRIVING
         )
 
-        journalforingClient.opprettJournalpost(request)
+        val brevBakingResponse = LetterResponse(
+            base64pdf = PDF,
+            letterMetadata = LetterMetadata(displayTitle = TITTEL, isSensitiv = false)
+        )
+
+        journalforingClient.opprettJournalpost(journalpostInfo, brevBakingResponse)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlPathEqualTo("/"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))
@@ -115,7 +113,6 @@ private val OMSORGP_GODSKRIVING_REQUEST = """
   },
   "tema": "${OmsorgsTema().getTema()}",
   "tittel": "$TITTEL",
-  "kanal": "${OpprettJournalpostRequest.defaultKanal}",
   "eksternReferanseId": "${BrevKode.OMSORGP_GODSKRIVING.name}${Md5Hash.createHashString("$FNR$AR$SAK_ID")}",
   "tilleggsopplysninger": [
     {

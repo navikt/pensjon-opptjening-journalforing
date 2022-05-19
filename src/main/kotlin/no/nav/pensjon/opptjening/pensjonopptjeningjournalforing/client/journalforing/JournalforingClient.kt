@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalpostInfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import org.springframework.http.HttpEntity
@@ -17,16 +18,16 @@ class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
         .build()
         .toUri()
 
-    fun opprettJournalpost(journalpostInfo: JournalpostInfo): OpprettJournalpostResponse {
+    fun opprettJournalpost(journalpostInfo: JournalpostInfo, brevbakingResponse: LetterResponse): OpprettJournalpostResponse {
         return restTemplate.exchange(
             urlWithParams,
             HttpMethod.POST,
-            HttpEntity(createRequest(journalpostInfo).toJson(), applicationJsonHeader),
+            HttpEntity(createRequest(journalpostInfo,brevbakingResponse).toJson(), applicationJsonHeader),
             OpprettJournalpostResponse::class.java
         ).body!!
     }
 
-    private fun createRequest(journalpostInfo: JournalpostInfo) =
+    private fun createRequest(journalpostInfo: JournalpostInfo, brevbakingResponse: LetterResponse) =
         OpprettJournalpostRequest(
             avsenderMottaker = Avsender(),
             behandlingstema = journalpostInfo.getBehandlingsTema(),
@@ -34,15 +35,15 @@ class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
             bruker = Bruker(id = journalpostInfo.fnr),
             dokumenter = listOf(
                 Dokument(
-                    tittel = journalpostInfo.brevTittel(),
+                    tittel = brevbakingResponse.brevTittel(),
                     brevkode = journalpostInfo.brevKode,
-                    dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = journalpostInfo.brev()))
+                    dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = brevbakingResponse.brev()))
                 )
             ),
             sak = journalpostInfo.sak,
-            tittel = journalpostInfo.brevTittel(),
+            tittel = brevbakingResponse.brevTittel(),
             eksternReferanseId = journalpostInfo.unikBrevId(),
-            tilleggsopplysninger = journalpostInfo.tilleggsopplysning()
+            tilleggsopplysninger = brevbakingResponse.tilleggsopplysning()
         )
 
     companion object {

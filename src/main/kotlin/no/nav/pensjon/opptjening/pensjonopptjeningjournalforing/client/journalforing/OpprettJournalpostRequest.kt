@@ -13,7 +13,6 @@ class OpprettJournalpostRequest(
     val sak: Sak,
     val tema: Tema,
     val tittel: String,
-    val kanal: String = defaultKanal, //TODO finn ut hva denne skal være spør Ida eller Alexander Haugli
     val eksternReferanseId: String? = null,
     val tilleggsopplysninger: List<Tilleggsopplysning>? = null,
 ) {
@@ -24,7 +23,6 @@ class OpprettJournalpostRequest(
     companion object{
         val defaultEnhet = Enhet.AUTOMATISK_JOURNALFORING
         val defaultJournalposttype = Journalposttype.UTGAAENDE
-        val defaultKanal = "POPP"
     }
 }
 

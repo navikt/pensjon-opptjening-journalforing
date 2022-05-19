@@ -1,14 +1,26 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling
 
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.DistribueringsInfo
+
 data class DokDistRequest(
     val journalpostId: String,        // "Journalpost som skal distribueres", example = "343752389"
     val bestillendeFagsystem: String, // "Fagsystemet som bestiller distribusjon", example = "SYM"
     val batchId: String? = null,      // "Identifiserer batch som forsendelsen inngår i. Lar bestiller identifisere forsendelser som hører sammen. Fritekst, og konsument må selv vurdere hva som er hensiktsmessige verdier", example = "54321"
-    val adresse: Adresse,             // "Struktur for å beskrive postadresse. Inneholder enten norsk postadresse eller utenlandsk postadresse. Påkrevd hvis mottaker er samhandler, ellers skal dokdistsentralprint hente adresse fra fellesregistre hvis ikke satt
+    val adresse: Adresse? = null,             // "Struktur for å beskrive postadresse. Inneholder enten norsk postadresse eller utenlandsk postadresse. Påkrevd hvis mottaker er samhandler, ellers skal dokdistsentralprint hente adresse fra fellesregistre hvis ikke satt
     val dokumentProdApp: String,      //  Applikasjon som har produsert hoveddokumentet (for sporing og feilsøking)
     val distribusjonstype: Distribusjonstype,   // Forteller dokumentdistribusjon hva slags dokument som distribueres. \"VEDTAK\", \"VIKTIG\" eller \"ANNET\""
-    val distribusjonstidspunkt: Distribusjonstidspunkt? = null // Forteller dokumentdistribusjon når dokumentet kan distribueres.
-)
+    val distribusjonstidspunkt: Distribusjonstidspunkt? = null, // Forteller dokumentdistribusjon når dokumentet kan distribueres.
+) {
+    constructor(distribueringsInfo: DistribueringsInfo, journalpostId: String) : this(
+        journalpostId,
+        distribueringsInfo.bestillendeFagsystem,
+        distribueringsInfo.batchId,
+        distribueringsInfo.adresse,
+        distribueringsInfo.dokumentProdApp,
+        distribueringsInfo.distribusjonstype,
+        distribueringsInfo.distribusjonstidspunkt
+    )
+}
 
 data class Adresse(
     val adressetype: Adressetype,
