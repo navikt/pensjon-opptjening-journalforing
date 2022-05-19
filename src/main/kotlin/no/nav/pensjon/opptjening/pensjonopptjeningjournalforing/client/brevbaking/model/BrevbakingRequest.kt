@@ -3,7 +3,7 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaki
 import java.time.LocalDate
 
 
-data class LetterRequest(val template: String, val letterData: Any, val felles: Felles, val language: LanguageCode)
+data class BrevbakingRequest(val template: String, val letterData: Any, val felles: Felles, val language: LanguageCode)
 
 enum class LanguageCode {
     BOKMAL, NYNORSK, ENGLISH;

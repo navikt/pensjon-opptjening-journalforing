@@ -1,13 +1,11 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Behandlingstema
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Sak
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.Tema
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.Md5Hash
 
-data class JournalpostInfo(
+data class JournalforingInfo(
     val fnr: String,
     val ar: Int,
     val sak: Sak,

@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalpostInfo
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -18,31 +18,33 @@ class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
         .build()
         .toUri()
 
-    fun opprettJournalpost(journalpostInfo: JournalpostInfo, brevbakingResponse: LetterResponse): OpprettJournalpostResponse {
+    fun opprettJournalpost(journalforingInfo: JournalforingInfo, brevbakingResponse: LetterResponse): OpprettJournalpostResponse {
+        val request = createRequest(journalforingInfo,brevbakingResponse)
+
         return restTemplate.exchange(
             urlWithParams,
             HttpMethod.POST,
-            HttpEntity(createRequest(journalpostInfo,brevbakingResponse).toJson(), applicationJsonHeader),
+            HttpEntity(request.toJson(), applicationJsonHeader),
             OpprettJournalpostResponse::class.java
         ).body!!
     }
 
-    private fun createRequest(journalpostInfo: JournalpostInfo, brevbakingResponse: LetterResponse) =
+    private fun createRequest(journalforingInfo: JournalforingInfo, brevbakingResponse: LetterResponse) =
         OpprettJournalpostRequest(
             avsenderMottaker = Avsender(),
-            behandlingstema = journalpostInfo.getBehandlingsTema(),
-            tema = journalpostInfo.getTema(),
-            bruker = Bruker(id = journalpostInfo.fnr),
+            behandlingstema = journalforingInfo.getBehandlingsTema(),
+            tema = journalforingInfo.getTema(),
+            bruker = Bruker(id = journalforingInfo.fnr),
             dokumenter = listOf(
                 Dokument(
                     tittel = brevbakingResponse.brevTittel(),
-                    brevkode = journalpostInfo.brevKode,
+                    brevkode = journalforingInfo.brevKode,
                     dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = brevbakingResponse.brev()))
                 )
             ),
-            sak = journalpostInfo.sak,
+            sak = journalforingInfo.sak,
             tittel = brevbakingResponse.brevTittel(),
-            eksternReferanseId = journalpostInfo.unikBrevId(),
+            eksternReferanseId = journalforingInfo.unikBrevId(),
             tilleggsopplysninger = brevbakingResponse.tilleggsopplysning()
         )
 

@@ -1,6 +1,6 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.DistribueringsInfo
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevDistribueringsInfo
 
 data class DokDistRequest(
     val journalpostId: String,        // "Journalpost som skal distribueres", example = "343752389"
@@ -11,14 +11,14 @@ data class DokDistRequest(
     val distribusjonstype: Distribusjonstype,   // Forteller dokumentdistribusjon hva slags dokument som distribueres. \"VEDTAK\", \"VIKTIG\" eller \"ANNET\""
     val distribusjonstidspunkt: Distribusjonstidspunkt? = null, // Forteller dokumentdistribusjon når dokumentet kan distribueres.
 ) {
-    constructor(distribueringsInfo: DistribueringsInfo, journalpostId: String) : this(
+    constructor(brevDistribueringsInfo: BrevDistribueringsInfo, journalpostId: String) : this(
         journalpostId,
-        distribueringsInfo.bestillendeFagsystem,
-        distribueringsInfo.batchId,
-        distribueringsInfo.adresse,
-        distribueringsInfo.dokumentProdApp,
-        distribueringsInfo.distribusjonstype,
-        distribueringsInfo.distribusjonstidspunkt
+        brevDistribueringsInfo.bestillendeFagsystem,
+        brevDistribueringsInfo.batchId,
+        brevDistribueringsInfo.adresse,
+        brevDistribueringsInfo.dokumentProdApp,
+        brevDistribueringsInfo.distribusjonstype,
+        brevDistribueringsInfo.distribusjonstidspunkt
     )
 }
 

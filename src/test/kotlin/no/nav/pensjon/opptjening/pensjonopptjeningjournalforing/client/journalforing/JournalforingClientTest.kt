@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.MockTokenConfig
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterMetadata
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.AR
@@ -12,7 +12,7 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.PDF
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.SAK_ID
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.TITTEL
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalpostInfo
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.OmsorgsTema
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.SakType
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.Md5Hash
@@ -45,7 +45,7 @@ internal class JournalforingClientTest {
                 )
         )
 
-        val journalpostInfo = JournalpostInfo(
+        val journalforingInfo = JournalforingInfo(
             fnr = FNR,
             ar = AR,
             sak = Sak(fagsakId = SAK_ID),
@@ -59,7 +59,7 @@ internal class JournalforingClientTest {
             letterMetadata = LetterMetadata(displayTitle = TITTEL, isSensitiv = false)
         )
 
-        journalforingClient.opprettJournalpost(journalpostInfo, brevBakingResponse)
+        journalforingClient.opprettJournalpost(journalforingInfo, brevBakingResponse)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlPathEqualTo("/"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))

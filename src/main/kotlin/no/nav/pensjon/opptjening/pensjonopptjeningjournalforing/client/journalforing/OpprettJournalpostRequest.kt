@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import com.fasterxml.jackson.annotation.JsonValue
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevKode
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
 
 class OpprettJournalpostRequest(
     val avsenderMottaker: Avsender,
@@ -16,6 +16,7 @@ class OpprettJournalpostRequest(
     val eksternReferanseId: String? = null,
     val tilleggsopplysninger: List<Tilleggsopplysning>? = null,
 ) {
+
     init {
         require(dokumenter.isNotEmpty()) { "OpprettJournalpostRequest.dokumenter must have one document" }
     }

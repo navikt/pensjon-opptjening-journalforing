@@ -4,7 +4,7 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling.Distribusjonstidspunkt
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling.Distribusjonstype
 
-data class DistribueringsInfo(
+data class BrevDistribueringsInfo(
     val bestillendeFagsystem: String,
     val batchId: String? = null,
     val adresse: Adresse? = null,
