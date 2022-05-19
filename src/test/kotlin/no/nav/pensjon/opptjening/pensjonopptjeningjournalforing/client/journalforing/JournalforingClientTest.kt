@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.MockTokenConfig
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterMetadata
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.AR
@@ -12,6 +11,7 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.PDF
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.SAK_ID
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClientTest.Companion.TITTEL
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.OmsorgsTema
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.SakType
@@ -45,21 +45,22 @@ internal class JournalforingClientTest {
                 )
         )
 
-        val journalforingInfo = JournalforingInfo(
-            fnr = FNR,
-            ar = AR,
-            sak = Sak(fagsakId = SAK_ID),
-            sakType = SakType.OMSORG,
-            land = "NO",
-            brevKode = BrevKode.OMSORGP_GODSKRIVING
+        val request = OpprettJournalpostRequest(
+            journalforingInfo = JournalforingInfo(
+                fnr = FNR,
+                ar = AR,
+                sak = Sak(fagsakId = SAK_ID),
+                sakType = SakType.OMSORG,
+                land = "NO",
+                brevKode = BrevKode.OMSORGP_GODSKRIVING
+            ),
+            letterResponse = LetterResponse(
+                base64pdf = PDF,
+                letterMetadata = LetterMetadata(displayTitle = TITTEL, isSensitiv = false)
+            )
         )
 
-        val brevBakingResponse = LetterResponse(
-            base64pdf = PDF,
-            letterMetadata = LetterMetadata(displayTitle = TITTEL, isSensitiv = false)
-        )
-
-        journalforingClient.opprettJournalpost(journalforingInfo, brevBakingResponse)
+        journalforingClient.opprettJournalpost(request)
 
         WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlPathEqualTo("/"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo("Bearer ${MockTokenConfig.JOURNALFORING_TOKEN}"))

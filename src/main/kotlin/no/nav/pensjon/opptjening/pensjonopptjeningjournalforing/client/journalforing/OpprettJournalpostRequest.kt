@@ -1,7 +1,9 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import com.fasterxml.jackson.annotation.JsonValue
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 
 class OpprettJournalpostRequest(
     val avsenderMottaker: Avsender,
@@ -16,6 +18,23 @@ class OpprettJournalpostRequest(
     val eksternReferanseId: String? = null,
     val tilleggsopplysninger: List<Tilleggsopplysning>? = null,
 ) {
+    constructor(journalforingInfo: JournalforingInfo, letterResponse: LetterResponse) : this(
+        avsenderMottaker = Avsender(),
+        behandlingstema = journalforingInfo.getBehandlingsTema(),
+        tema = journalforingInfo.getTema(),
+        bruker = Bruker(id = journalforingInfo.fnr),
+        dokumenter = listOf(
+            Dokument(
+                tittel = letterResponse.brevTittel(),
+                brevkode = journalforingInfo.brevKode,
+                dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = letterResponse.brev()))
+            )
+        ),
+        sak = journalforingInfo.sak,
+        tittel = letterResponse.brevTittel(),
+        eksternReferanseId = journalforingInfo.unikBrevId(),
+        tilleggsopplysninger = letterResponse.tilleggsopplysning()
+    )
 
     init {
         require(dokumenter.isNotEmpty()) { "OpprettJournalpostRequest.dokumenter must have one document" }

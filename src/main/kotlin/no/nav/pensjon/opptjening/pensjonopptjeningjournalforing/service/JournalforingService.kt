@@ -5,6 +5,7 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbakin
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling.DokDistClient
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.dokdistfordeling.DokDistRequest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.JournalforingClient
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing.OpprettJournalpostRequest
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,7 +24,10 @@ class JournalforingService(
 
     fun journalfor(journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo, request: BrevbakingRequest) {
         val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode,request)
-        val opprettJournalpostResponse = journalforingClient.opprettJournalpost(journalforingInfo,brevBakerResponse)
+
+        val opprettJournalpostRequest = OpprettJournalpostRequest(journalforingInfo,brevBakerResponse)
+        val opprettJournalpostResponse = journalforingClient.opprettJournalpost(opprettJournalpostRequest)
+
         val dokDistRequest = DokDistRequest(brevDistribueringsInfo, opprettJournalpostResponse.journalpostId)
         val distribuerBrevResponse = dokDistClient.distribuerBrev(dokDistRequest)
     }

@@ -1,7 +1,5 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LetterResponse
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -18,9 +16,7 @@ class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
         .build()
         .toUri()
 
-    fun opprettJournalpost(journalforingInfo: JournalforingInfo, brevbakingResponse: LetterResponse): OpprettJournalpostResponse {
-        val request = createRequest(journalforingInfo,brevbakingResponse)
-
+    fun opprettJournalpost(request: OpprettJournalpostRequest): OpprettJournalpostResponse {
         return restTemplate.exchange(
             urlWithParams,
             HttpMethod.POST,
@@ -28,25 +24,6 @@ class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
             OpprettJournalpostResponse::class.java
         ).body!!
     }
-
-    private fun createRequest(journalforingInfo: JournalforingInfo, brevbakingResponse: LetterResponse) =
-        OpprettJournalpostRequest(
-            avsenderMottaker = Avsender(),
-            behandlingstema = journalforingInfo.getBehandlingsTema(),
-            tema = journalforingInfo.getTema(),
-            bruker = Bruker(id = journalforingInfo.fnr),
-            dokumenter = listOf(
-                Dokument(
-                    tittel = brevbakingResponse.brevTittel(),
-                    brevkode = journalforingInfo.brevKode,
-                    dokumentvarianter = listOf(Dokumentvariant(fysiskDokument = brevbakingResponse.brev()))
-                )
-            ),
-            sak = journalforingInfo.sak,
-            tittel = brevbakingResponse.brevTittel(),
-            eksternReferanseId = journalforingInfo.unikBrevId(),
-            tilleggsopplysninger = brevbakingResponse.tilleggsopplysning()
-        )
 
     companion object {
         private val applicationJsonHeader = HttpHeaders().apply {
