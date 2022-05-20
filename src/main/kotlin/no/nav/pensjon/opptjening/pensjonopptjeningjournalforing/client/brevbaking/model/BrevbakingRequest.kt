@@ -1,9 +1,17 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model
 
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevInfo
 import java.time.LocalDate
 
 
-data class BrevbakingRequest(val template: String, val letterData: Any, val felles: Felles, val language: LanguageCode)
+data class BrevbakingRequest(val template: String, val letterData: Any, val felles: Felles, val language: LanguageCode) {
+    constructor(brevInfo: BrevInfo, language: LanguageCode) : this(
+        template = brevInfo.template,
+        letterData = brevInfo.letterData,
+        felles = brevInfo.felles,
+        language = language
+    )
+}
 
 enum class LanguageCode {
     BOKMAL, NYNORSK, ENGLISH;

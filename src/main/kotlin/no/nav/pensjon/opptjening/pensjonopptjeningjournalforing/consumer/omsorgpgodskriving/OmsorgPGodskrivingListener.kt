@@ -2,12 +2,8 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.consumer.omsorg
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.micrometer.core.instrument.MeterRegistry
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.BrevbakingRequest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.Felles
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevDistribueringsInfo
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.BrevKode
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingInfo
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.JournalforingService
+import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.service.*
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -43,26 +39,16 @@ class OmsorgPGodskrivingListener(
         val record: OmsorgPGodskrivingRecord = jacksonObjectMapper().readValue(consumerRecord.value(), OmsorgPGodskrivingRecord::class.java)
         try {
             /*
-            val brevbakingRequest = BrevbakingRequest(
-                template = BrevKode.OMSORGP_GODSKRIVING.name,
-                letterData = record.letterData,
-                felles = Felles(
-                    dokumentDato = LocalDate.now(),
-                    saksnummer = record.saksnummer
-                ),
-                language =)
-            val journalforingInfo = JournalforingInfo()
-            val brevDistribueringsInfo = BrevDistribueringsInfo()
-
             journalforingService.journalfor(
-                brevbakingRequest = brevbakingRequest,
-                journalforingInfo = journalforingInfo,
-                brevDistribueringsInfo = brevDistribueringsInfo
+                brevInfo = createBrevbakingInfo(record.letterData,record.saksnummer),
+                journalforingInfo = JournalforingInfo(),
+                brevDistribueringsInfo = BrevDistribueringsInfo()
             )
-            acknowledgment.acknowledge()
-            counterProcessedRecords.increment()
 
              */
+
+            acknowledgment.acknowledge()
+            counterProcessedRecords.increment()
         } catch (e: Exception) {
             counterFailedRecords.increment()
             logger.error(e.message, e)
@@ -70,6 +56,14 @@ class OmsorgPGodskrivingListener(
         }
     }
 
+    private fun createBrevbakingInfo(letterData: String, saksnummer: String) =
+        BrevInfo(
+            template = BrevKode.OMSORGP_GODSKRIVING.name,
+            letterData = letterData,
+            felles = Felles(
+                dokumentDato = LocalDate.now(),
+                saksnummer = saksnummer
+            ))
 
     @PostConstruct
     fun initMetrics() {

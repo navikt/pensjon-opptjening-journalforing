@@ -17,9 +17,11 @@ class JournalforingService(
     private val krrClient: KrrClient
 ) {
 
-    fun journalfor(brevbakingRequest: BrevbakingRequest, journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo) {
+    fun journalfor(brevInfo: BrevInfo, journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo) {
 
         val language = krrClient.getLanguageCode(journalforingInfo.fnr)
+
+        val brevbakingRequest = BrevbakingRequest(brevInfo,language)
         val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode, brevbakingRequest)
 
         val opprettJournalpostRequest = OpprettJournalpostRequest(journalforingInfo, brevBakerResponse)
