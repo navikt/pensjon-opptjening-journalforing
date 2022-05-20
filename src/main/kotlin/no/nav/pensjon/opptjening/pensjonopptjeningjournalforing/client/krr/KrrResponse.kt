@@ -4,14 +4,11 @@ import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbakin
 
 
 class KrrResponse(
-    val personer: Map<String, DigitalKontaktinformasjon> = mapOf(),
-    val feil: Map<String, String> = mapOf(),
-)
-
-class DigitalKontaktinformasjon(
     val personident: String,
     val aktiv: Boolean,
     val spraak: String? = null,
 )
 
-fun KrrResponse.getLanguageCode(): LanguageCode = LanguageCode.createLanguageCode(personer.entries.firstOrNull()?.value?.spraak ?: "default")
+fun KrrResponse.getLanguageCode(): LanguageCode {
+    return LanguageCode.createLanguageCode(spraak ?: "default")
+}

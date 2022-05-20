@@ -19,12 +19,14 @@ enum class LanguageCode {
     companion object {
         fun createLanguageCode(spraak: String): LanguageCode {
             return when (spraak.uppercase()) {
-                ("NN") -> NYNORSK
-                ("NO") -> BOKMAL
                 ("EN") -> ENGLISH
-                else -> BOKMAL
+                ("NB") -> BOKMAL
+                ("NN") -> NYNORSK
+                else -> standardLanguage()
             }
         }
+
+        fun standardLanguage() = BOKMAL
     }
 }
 

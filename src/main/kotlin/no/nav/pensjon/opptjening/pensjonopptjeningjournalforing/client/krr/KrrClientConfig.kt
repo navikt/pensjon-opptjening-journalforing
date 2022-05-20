@@ -18,7 +18,7 @@ import java.time.Duration
 class KrrClientConfig {
     @Bean("azureAdConfigKrr")
     @Profile("dev-gcp", "prod-gcp")
-    fun azureAdConfigJournalforing(
+    fun azureAdConfigKrr(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
         @Value("\${KRR_API_ID}") krrApiId: String,
@@ -32,13 +32,13 @@ class KrrClientConfig {
 
     @Bean("tokenProviderKrr")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderJournalforing(@Qualifier("azureAdConfigJournalforing") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderKrr(@Qualifier("azureAdConfigKrr") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("krrTokenInterceptor")
-    fun JournalforingTokenInterceptor(@Qualifier("tokenProviderJournalforing") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    fun krrTokenInterceptor(@Qualifier("tokenProviderKrr") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
     @Bean("krrRestTemplate")
-    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("JournalforingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
+    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("krrTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
         .additionalInterceptors(tokenInterceptor)
