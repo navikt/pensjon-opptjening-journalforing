@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.krr
 
+import io.micrometer.core.instrument.MeterRegistry
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -44,7 +45,7 @@ class KrrClientConfig {
         .build()
 
     @Bean
-    fun krrClient(@Qualifier("krrRestTemplate") restTemplate: RestTemplate, @Value("\${KRR_PROXY_URL}") url: String): KrrClient {
-        return KrrClient(restTemplate,url)
+    fun krrClient(@Qualifier("krrRestTemplate") restTemplate: RestTemplate, @Value("\${KRR_PROXY_URL}") url: String, registry: MeterRegistry): KrrClient {
+        return KrrClient(restTemplate, url, registry)
     }
 }
