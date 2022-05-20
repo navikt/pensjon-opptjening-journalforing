@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service
 class JournalforingService(
     private val brevbakerClient: BrevbakerClient,
     private val journalforingClient: JournalforingClient,
-    private val dokDistClient: DokDistClient
+    private val dokDistClient: DokDistClient,
 ) {
 
-    fun journalfor(journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo, brevbakingRequest: BrevbakingRequest) {
-        val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode,brevbakingRequest)
+    fun journalfor(brevbakingRequest: BrevbakingRequest, journalforingInfo: JournalforingInfo, brevDistribueringsInfo: BrevDistribueringsInfo) {
+        val brevBakerResponse = brevbakerClient.lagBrev(journalforingInfo.brevKode, brevbakingRequest)
 
-        val opprettJournalpostRequest = OpprettJournalpostRequest(journalforingInfo,brevBakerResponse)
+        val opprettJournalpostRequest = OpprettJournalpostRequest(journalforingInfo, brevBakerResponse)
         val opprettJournalpostResponse = journalforingClient.opprettJournalpost(opprettJournalpostRequest)
 
         val dokDistRequest = DokDistRequest(brevDistribueringsInfo, opprettJournalpostResponse.journalpostId)

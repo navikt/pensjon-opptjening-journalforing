@@ -7,13 +7,24 @@ data class BrevbakingRequest(val template: String, val letterData: Any, val fell
 
 enum class LanguageCode {
     BOKMAL, NYNORSK, ENGLISH;
+
+    companion object {
+        fun createLanguageCode(spraak: String): LanguageCode {
+            return when (spraak.uppercase()) {
+                ("NN") -> NYNORSK
+                ("NO") -> BOKMAL
+                ("EN") -> ENGLISH
+                else -> BOKMAL
+            }
+        }
+    }
 }
 
 data class Felles(
     val dokumentDato: LocalDate,
     val saksnummer: String,
-    val avsenderEnhet: NAVEnhet,
-    val mottaker: Mottaker,
+    val avsenderEnhet: NAVEnhet? = null,
+    val mottaker: Mottaker? = null,
     val signerendeSaksbehandlere: SignerendeSaksbehandlere? = null,
 )
 
@@ -26,7 +37,7 @@ data class Mottaker(
     val mellomnavn: String? = null,
     val etternavn: String,
     val foedselsnummer: Foedselsnummer,
-    val adresse: Adresse,
+    val adresse: Adresse?,
 )
 
 data class Adresse(

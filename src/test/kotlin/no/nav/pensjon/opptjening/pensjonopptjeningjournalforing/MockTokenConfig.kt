@@ -13,6 +13,7 @@ class MockTokenConfig {
         const val DOKDISTFORDELING_TOKEN = "dokdistfordeling.dokdistfordeling.dokdistfordeling"
         const val JOURNALFORING_TOKEN = "Journalforing.Journalforing.Journalforing"
         const val POSTADRESSE_TOKEN = "postadresse.postadresse.postadresse"
+        const val KRR_TOKEN = "krr.krr.krr"
     }
 
     @Bean("tokenProviderBrevbaker")
@@ -26,5 +27,8 @@ class MockTokenConfig {
 
     @Bean("tokenProviderPostadresse")
     fun mockTokenProviderPostadresse(): TokenProvider = MockTokenProvider(POSTADRESSE_TOKEN)
+
+    @Bean("tokenProviderKrr")
+    fun mockTokenProviderKrr(): TokenProvider = MockTokenProvider(KRR_TOKEN)
 
 }

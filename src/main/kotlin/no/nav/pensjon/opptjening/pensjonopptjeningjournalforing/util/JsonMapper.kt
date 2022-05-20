@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
+
+
+
 fun Any.toJson() : String = jacksonObjectMapper()
     .registerModule(JavaTimeModule())
     .writerWithDefaultPrettyPrinter()
     .writeValueAsString(this)
-
 
 fun Any.toJson(nonempty: Boolean = false): String {
     return if (nonempty) {

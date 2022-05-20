@@ -2,6 +2,7 @@ BREVBAKER_URL: http://localhost:4567
 DOKDISTFORDELING_URL: http://localhost:4567
 JOURNALFORING_URL: http://localhost:4567
 POSTADRESSE_URL: http://localhost:4567
+KRR_PROXY_URL: http://localhost:4567
 kafka.brokers: ${spring.embedded.kafka.brokers}
 OMSORGP_GODSKRIVING_TOPIC: pensjonopptjening.pgi-endring-topic
 OMSORGP_GODSKRIVING_GROUP_ID: omsorgp-godskriving-group-v1
