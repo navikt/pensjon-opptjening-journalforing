@@ -7,14 +7,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.web.client.RestTemplate
 import pensjon.opptjening.azure.ad.client.AzureAdTokenProvider
 import pensjon.opptjening.azure.ad.client.AzureAdVariableConfig
 import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class DokdistClientConfig {
+class DokdistRestTemplateConfig {
 
     @Bean("azureAdConfigDokdist")
     @Profile("dev-gcp", "prod-gcp")
@@ -45,8 +44,4 @@ class DokdistClientConfig {
             .rootUri(url)
             .additionalInterceptors(tokenInterceptor)
             .build()
-
-    @Bean
-    fun dokDistClient(@Value("\${DOKDISTFORDELING_URL}") url: String, @Qualifier("dokdistRestTemplate") dokdistRestTemplate: RestTemplate): DokDistClient =
-        DokDistClient(url, dokdistRestTemplate)
 }

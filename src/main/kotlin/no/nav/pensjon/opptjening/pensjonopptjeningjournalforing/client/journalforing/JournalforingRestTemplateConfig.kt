@@ -14,7 +14,7 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class JournalforingClientConfig {
+class JournalforingRestTemplateConfig {
 
     @Bean("azureAdConfigJournalforing")
     @Profile("dev-gcp", "prod-gcp")
@@ -32,20 +32,17 @@ class JournalforingClientConfig {
 
     @Bean("tokenProviderJournalforing")
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderJournalforing(@Qualifier("azureAdConfigJournalforing") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderJournalforing(@Qualifier("azureAdConfigJournalforing") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider =
+        AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean("JournalforingTokenInterceptor")
     fun JournalforingTokenInterceptor(@Qualifier("tokenProviderJournalforing") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
     @Bean("journalforingRestTemplate")
-    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("JournalforingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
-        .setConnectTimeout(Duration.ofMillis(1000))
-        .rootUri(url)
-        .additionalInterceptors(tokenInterceptor)
-        .build()
-
-    @Bean
-    fun journalforingClient(@Qualifier("journalforingRestTemplate") restTemplate: RestTemplate,@Value("\${JOURNALFORING_URL}") url: String): JournalforingClient {
-        return JournalforingClient(restTemplate,url)
-    }
+    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("JournalforingTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate =
+        RestTemplateBuilder()
+            .setConnectTimeout(Duration.ofMillis(1000))
+            .rootUri(url)
+            .additionalInterceptors(tokenInterceptor)
+            .build()
 }

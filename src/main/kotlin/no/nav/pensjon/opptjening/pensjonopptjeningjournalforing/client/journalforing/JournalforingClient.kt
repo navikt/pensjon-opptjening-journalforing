@@ -1,14 +1,18 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.journalforing
 
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
-class JournalforingClient(private val restTemplate: RestTemplate, url: String) {
+@Component
+class JournalforingClient(@Qualifier("journalforingRestTemplate") private val restTemplate: RestTemplate, @Value("\${JOURNALFORING_URL}") private val url: String) {
 
     private val urlWithParams = UriComponentsBuilder
         .fromUriString(url)

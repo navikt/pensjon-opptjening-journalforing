@@ -14,7 +14,7 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class KrrClientConfig {
+class KrrRestTemplateConfig {
     @Bean("azureAdConfigKrr")
     @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigKrr(
@@ -37,7 +37,7 @@ class KrrClientConfig {
     fun krrTokenInterceptor(@Qualifier("tokenProviderKrr") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
     @Bean("krrRestTemplate")
-    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("krrTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate =
+    fun krrRestTemplate(@Value("\${KRR_PROXY_URL}") url: String, @Qualifier("krrTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate =
         RestTemplateBuilder()
             .setConnectTimeout(Duration.ofMillis(1000))
             .rootUri(url)

@@ -7,14 +7,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.web.client.RestTemplate
 import pensjon.opptjening.azure.ad.client.AzureAdTokenProvider
 import pensjon.opptjening.azure.ad.client.AzureAdVariableConfig
 import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class BrevbakerClientConfig {
+class BrevbakerRestTemplateConfig {
 
     @Bean("azureAdConfigBrevbaker")
     @Profile("dev-gcp", "prod-gcp")
@@ -43,9 +42,4 @@ class BrevbakerClientConfig {
         .rootUri(url)
         .additionalInterceptors(tokenInterceptor)
         .build()
-
-    @Bean
-    fun brevbakerClient(@Qualifier("brevbakerRestTemplate") restTemplate: RestTemplate,@Value("\${BREVBAKER_URL}") url: String): BrevbakerClient {
-        return BrevbakerClient(restTemplate,url)
-    }
 }
