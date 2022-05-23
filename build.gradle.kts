@@ -5,7 +5,7 @@ val springVersion = "2.6.7"
 val springKafkaVersion = "2.8.5"
 val azureAdClientVersion = "0.0.7"
 val brevmodelVersion = "1.3.3-SNAPSHOT"
-val prometheusVersion = "1.8.5"
+val prometheusVersion = "1.9.0"
 val logbackEncoderVersion = "7.1.1"
 
 val wiremockVersion = "2.33.2"
@@ -51,6 +51,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springKafkaVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+
 }
 
 tasks.withType<KotlinCompile> {
