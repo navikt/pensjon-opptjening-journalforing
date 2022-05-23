@@ -3,14 +3,21 @@ package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.krr
 import io.micrometer.core.instrument.MeterRegistry
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.brevbaking.model.LanguageCode
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
+import org.springframework.retry.annotation.Backoff
+import org.springframework.retry.annotation.Retryable
+import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
+
+@Component
 class KrrClient(
-    private val restTemplate: RestTemplate,
-    private val url: String,
+    @Qualifier("krrRestTemplate") private val restTemplate: RestTemplate,
+    @Value("\${KRR_PROXY_URL}") private val url: String,
     registry: MeterRegistry,
 ) {
 
@@ -18,6 +25,11 @@ class KrrClient(
     private val counterSuccessfulKrr = registry.counter("krr_request", "status", "ok")
     private val counterNotFoundKrr = registry.counter("krr_request", "status", "notfound")
 
+
+    @Retryable(
+        include = [HttpStatusCodeException::class],
+        backoff = Backoff(delay = 1000L, maxDelay = 140000L, multiplier = 3.0)
+    )
     fun getLanguageCode(fnr: String): LanguageCode {
         try {
             val response = restTemplate.exchange(

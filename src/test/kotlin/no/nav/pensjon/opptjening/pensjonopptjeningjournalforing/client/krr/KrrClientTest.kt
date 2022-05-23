@@ -69,12 +69,14 @@ internal class KrrClientTest {
     }
 
     @Test
-    fun `should throw exception if krr does nor return 200 or 404`() {
+    fun `should retry three times and throw exception if krr returns 500 server error`() {
         stubKrr(krrResponse = null, HttpStatus.INTERNAL_SERVER_ERROR)
 
         assertThrows<HttpStatusCodeException> {
             krrClient.getLanguageCode(FNR)
         }
+
+        WireMock.verify(3, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/")))
     }
 
     private fun stubKrr(krrResponse: KrrResponse?, status: HttpStatus = HttpStatus.OK) {

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
-val springVersion = "2.6.7"
+val springVersion = "2.7.0"
 val springKafkaVersion = "2.8.5"
 val azureAdClientVersion = "0.0.7"
 val brevmodelVersion = "1.3.3-SNAPSHOT"
@@ -34,6 +34,7 @@ dependencies {
     //Spring
     implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
+    implementation("org.springframework.boot:spring-boot-starter-aop:$springVersion")
     implementation("org.springframework.kafka:spring-kafka:$springKafkaVersion")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

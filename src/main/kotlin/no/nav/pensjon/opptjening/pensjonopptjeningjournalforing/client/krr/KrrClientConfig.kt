@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.krr
 
-import io.micrometer.core.instrument.MeterRegistry
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -38,14 +37,10 @@ class KrrClientConfig {
     fun krrTokenInterceptor(@Qualifier("tokenProviderKrr") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
     @Bean("krrRestTemplate")
-    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("krrTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate = RestTemplateBuilder()
-        .setConnectTimeout(Duration.ofMillis(1000))
-        .rootUri(url)
-        .additionalInterceptors(tokenInterceptor)
-        .build()
-
-    @Bean
-    fun krrClient(@Qualifier("krrRestTemplate") restTemplate: RestTemplate, @Value("\${KRR_PROXY_URL}") url: String, registry: MeterRegistry): KrrClient {
-        return KrrClient(restTemplate, url, registry)
-    }
+    fun journalforingRestTemplate(@Value("\${JOURNALFORING_URL}") url: String, @Qualifier("krrTokenInterceptor") tokenInterceptor: TokenInterceptor): RestTemplate =
+        RestTemplateBuilder()
+            .setConnectTimeout(Duration.ofMillis(1000))
+            .rootUri(url)
+            .additionalInterceptors(tokenInterceptor)
+            .build()
 }
