@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 val springVersion = "2.7.0"
-val springKafkaVersion = "2.8.5"
+val springKafkaVersion = "3.0.11"
 val azureAdClientVersion = "0.0.7"
 val brevmodelVersion = "1.3.3-SNAPSHOT"
 val prometheusVersion = "1.9.0"
