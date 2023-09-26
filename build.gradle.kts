@@ -8,7 +8,7 @@ val brevmodelVersion = "1.3.3-SNAPSHOT"
 val prometheusVersion = "1.9.0"
 val logbackEncoderVersion = "7.1.1"
 
-val wiremockVersion = "2.33.2"
+val wiremockVersion = "2.35.1"
 
 plugins {
     id("org.springframework.boot") version "2.6.7"
