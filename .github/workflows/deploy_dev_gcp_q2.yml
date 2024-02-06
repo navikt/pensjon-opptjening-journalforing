@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
     steps:
       # PULLER REPO
       - name: 'Pull repo'
@@ -46,9 +47,8 @@ jobs:
 
       # DEPLOYER TIL NAIS dev-gcp team namespace
       - name: 'Deploy pensjon-opptjening-journalforing to dev-gcp q2'
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           RESOURCE: nais/dev-gcp-q2.yml
           CLUSTER: dev-gcp
           IMAGE: ${{ env.IMAGE }}
